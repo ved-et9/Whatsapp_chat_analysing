@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 import seaborn as sns
 from collections import Counter
+import numpy as np
 #sns.set()
 from urlextract import URLExtract
 extra=URLExtract()
@@ -121,3 +122,40 @@ def daily_timeline(user,data_f):
     if user != 'Overall':
         data_f = data_f[data_f['user'] == user]
     date_timeline = data_f.groupby('timeline_date').count()['message'].reset_index()
+    return date_timeline
+
+#activity map
+def weekly_act(user,data_f):
+    if user != 'Overall':
+        data_f = data_f[data_f['user'] == user]
+    return data_f['day_name'].value_counts()
+def month_activity(user,data_f):
+    if user != 'Overall':
+        data_f = data_f[data_f['user'] == user]
+    return data_f['month'].value_counts()
+
+
+#busy and quiet day
+
+def busy_quiet(user,data_f):
+    if user != 'Overall':
+        data_f = data_f[data_f['user'] == user]
+    timeline = data_f.groupby(['year', 'month_num', 'month']).count()['message'].reset_index()
+    time = []
+    for i in range(timeline.shape[0]):
+        time.append(timeline['month'][i] + "-" + str(timeline['year'][i]))
+    timeline['time'] = time
+    date_timeline = data_f.groupby('timeline_date').count()['message'].reset_index()
+    busiest_day = date_timeline.sort_values('message', ascending=0).reset_index()
+    busiest_day.index = np.arange(1, len(busiest_day) + 1)
+
+    quiet_day = date_timeline.sort_values('message', ascending=1).reset_index()
+    quiet_day.index = np.arange(1, len(quiet_day) + 1)
+    return busiest_day,quiet_day
+
+#heat amp
+def heat_map(user,data_f):
+    if user != 'Overall':
+        data_f = data_f[data_f['user'] == user]
+    heat_map_u=data_f.pivot_table(index='day_name', columns='period', values='message', aggfunc='count').fillna(0)
+    return heat_map_u

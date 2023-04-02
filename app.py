@@ -3,6 +3,8 @@ import streamlit as st
 import pre_process
 import main
 import pandas as pd
+from matplotlib.pyplot import figure
+import seaborn as sns
 
 st.sidebar.title("Whatsaap Chat Analyzer")
 file=st.sidebar.file_uploader("choose a file")
@@ -61,7 +63,7 @@ if file is not None:
 
 
             #word_cloud
-            st.subheader("Word cloud")
+        st.subheader("Word cloud")
         new_data = data_f[data_f['message'] != '<Media omitted>\n']
         df_wcloud=main.create_wordcloud(selected_user,new_data)
         fig,ax=plt.subplots()
@@ -82,10 +84,54 @@ if file is not None:
         st.subheader("Timeline")
         timeline=main.monthly_timeline(selected_user,data_f)
         fig,ax =plt.subplots()
-        ax.plot(timeline['time'], timeline['message'],color='orange')
+        ax.stem(timeline['time'], timeline['message'])
         plt.xticks(rotation='vertical')
         st.pyplot(fig)
         #daily timeline
-
+        st.subheader("Daily Timeline")
         date_timeline=main.daily_timeline(selected_user,data_f)
+        fig, ax = plt.subplots()
         plt.plot(date_timeline['timeline_date'], date_timeline['message'])
+        plt.xticks(rotation='vertical')
+        st.pyplot(fig)
+         #activity map
+        st.subheader("Activity Map")
+        col1,col2=st.columns(2)
+
+        with col1:
+            st.subheader("Most busy Day")
+            busy_day = main.weekly_act(selected_user,data_f)
+            fig,ax=plt.subplots()
+
+            plt.xticks(rotation='vertical')
+            ax.bar(busy_day.index,busy_day.values)
+            st.pyplot(fig)
+        with col2:
+            st.subheader("Most busy Month")
+            busy_month = main.month_activity(selected_user, data_f)
+            fig, ax = plt.subplots()
+            plt.xticks(rotation='vertical')
+            ax.bar(busy_month.index, busy_month.values,color='green')
+            st.pyplot(fig)
+
+
+
+        #busiest and quitest day
+        col1,col2=st.columns(2)
+        bu,qu=main.busy_quiet(selected_user,data_f)
+        with col1:
+            st.subheader("Busiest day's")
+            st.dataframe(bu)
+        with col2:
+            st.subheader("Quitiest day's")
+            st.dataframe(qu)
+        st.text("Here <index> is the  day no. from 24 april 2022")
+
+
+        #heat_map
+        st.subheader("Day Long Heat Map")
+        heat_map_u=main.heat_map(selected_user,data_f)
+        fig,ax=plt.subplots()
+
+        ax=sns.heatmap(heat_map_u)
+        st.pyplot(fig)

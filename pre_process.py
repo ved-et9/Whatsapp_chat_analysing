@@ -33,4 +33,17 @@ def pre_p(data):
     data_f['minute'] = data_f['date'].dt.minute
     data_f['month_num'] = data_f['date'].dt.month
     data_f['timeline_date'] = data_f['date'].dt.date
+    data_f['day_name']=data_f['date'].dt.day_name()
+
+    period = []
+    for hour in data_f[['day_name', 'hour']]['hour']:
+        if hour == 23:
+            period.append(str(hour) + "-" + str(hour + 1))
+        elif hour == 0:
+            period.append(str('00') + "-" + str(hour + 1))
+        else:
+            period.append(str(hour) + "-" + str(hour + 1))
+
+    data_f['period'] = period
+
     return data_f
