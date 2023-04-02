@@ -19,9 +19,9 @@ if file is not None:
 
     users_list=data_f['user'].unique().tolist()
 
-    users_list.remove("90951")
-    users_list.remove("812")
-    users_list.remove("57078")
+    #users_list.remove("90951")
+    #users_list.remove("812")
+    #users_list.remove("57078")
     users_list.remove("group_notification")
     users_list.sort()
     users_list.insert(0,"Overall")
@@ -73,15 +73,20 @@ if file is not None:
         st.pyplot(fig)
 
 
+
+
         #most used words
         col1,col2=st.columns(2)
         with col1:
             st.subheader("Most used words")
             most_data_f=main.most_used_words(selected_user,data_f)
+
             st.dataframe(most_data_f)
 
+
+
         #timeline
-        st.subheader("Timeline")
+        st.subheader("Monthly Timeline")
         timeline=main.monthly_timeline(selected_user,data_f)
         fig,ax =plt.subplots()
         ax.stem(timeline['time'], timeline['message'])
@@ -125,7 +130,8 @@ if file is not None:
         with col2:
             st.subheader("Quitiest day's")
             st.dataframe(qu)
-        st.text("Here <index> is the  day no. from 24 april 2022")
+        st.text("Here <index> is the  day no. from starting day of the group and for person analysis ")
+        st.text("it is from their joining date")
 
 
         #heat_map

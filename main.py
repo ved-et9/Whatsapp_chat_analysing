@@ -5,6 +5,7 @@ from wordcloud import WordCloud
 import seaborn as sns
 from collections import Counter
 import numpy as np
+import emoji
 #sns.set()
 from urlextract import URLExtract
 extra=URLExtract()
@@ -159,3 +160,6 @@ def heat_map(user,data_f):
         data_f = data_f[data_f['user'] == user]
     heat_map_u=data_f.pivot_table(index='day_name', columns='period', values='message', aggfunc='count').fillna(0)
     return heat_map_u
+
+
+#emoji
