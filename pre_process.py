@@ -9,7 +9,7 @@ def pre_p(data):
     dates = re.findall(way, data)
 
     data_f = pd.DataFrame({'user_message': message, 'message_dates': dates})
-    data_f['message_dates'] = pd.to_datetime(data_f['message_dates'], format='%d/%f/%y, %H:%M - ')
+    data_f['message_dates'] = pd.to_datetime(data_f['message_dates'], format='%m/%d/%y, %H:%M - ')
 
     data_f.rename(columns={'message_dates': 'date'}, inplace=True)
     users = []
@@ -31,5 +31,6 @@ def pre_p(data):
     data_f['day'] = data_f['date'].dt.day
     data_f['hour'] = data_f['date'].dt.hour
     data_f['minute'] = data_f['date'].dt.minute
-
-    return  data_f
+    data_f['month_num'] = data_f['date'].dt.month
+    data_f['timeline_date'] = data_f['date'].dt.date
+    return data_f
