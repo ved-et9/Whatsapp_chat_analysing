@@ -11,3 +11,5 @@ These parameters can be analyzed for overall or on any specific participants
 * It works for data when your time setting is on 24 hour clock to overcome this situation either use 24 hour clock or change regex equation in pre_process file
   to way = '\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{2}\s\w{2}\s-\s'
 * To run the app type <-streamlit run app.py-> in terminal
+
+https://chat-analysis-5uib.onrender.com
