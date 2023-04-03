@@ -5,7 +5,7 @@ from wordcloud import WordCloud
 import seaborn as sns
 from collections import Counter
 import numpy as np
-import emoji
+
 #sns.set()
 from urlextract import URLExtract
 extra=URLExtract()
