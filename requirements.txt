@@ -1,4 +1,4 @@
-matplotlib==3.7.1
+matplotlib==3.5.3
 seaborn==0.12.2
 wordcloud==1.8.2.2
 numpy==1.24.2
