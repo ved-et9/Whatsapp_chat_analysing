@@ -162,4 +162,3 @@ def heat_map(user,data_f):
     return heat_map_u
 
 
-#emoji
