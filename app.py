@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import streamlit as st
 import pre_process
+import main_f
 
 import pandas as pd
 from matplotlib.pyplot import figure
@@ -29,7 +30,7 @@ if file is not None:
 
     st.title("Statistical Analysis")
     if st.sidebar.button("Show Analysis"):
-        number_of_messages,words,no_of_media,link_sent=main.fetch_stat(selected_user,data_f)
+        number_of_messages,words,no_of_media,link_sent=main_f.fetch_stat(selected_user,data_f)
         col1,col2,col3,col4=st.columns(4)
         with col1:
             st.subheader("Total Messages")
@@ -46,7 +47,7 @@ if file is not None:
         if selected_user == 'Overall':
             st.subheader('Most Busy Users')
 
-            x,new_df=main.most_busy_users((data_f))
+            x,new_df=main_f.most_busy_users((data_f))
             fig, ax = plt.subplots()
 
             col1,col2=st.columns(2)
@@ -65,7 +66,7 @@ if file is not None:
             #word_cloud
         st.subheader("Word cloud")
         new_data = data_f[data_f['message'] != '<Media omitted>\n']
-        df_wcloud=main.create_wordcloud(selected_user,new_data)
+        df_wcloud=main_f.create_wordcloud(selected_user,new_data)
         fig,ax=plt.subplots()
         ax.imshow(df_wcloud)
         plt.grid(False)
@@ -79,7 +80,7 @@ if file is not None:
         col1,col2=st.columns(2)
         with col1:
             st.subheader("Most used words")
-            most_data_f=main.most_used_words(selected_user,data_f)
+            most_data_f=main_f.most_used_words(selected_user,data_f)
 
             st.dataframe(most_data_f)
 
@@ -87,14 +88,14 @@ if file is not None:
 
         #timeline
         st.subheader("Monthly Timeline")
-        timeline=main.monthly_timeline(selected_user,data_f)
+        timeline=main_f.monthly_timeline(selected_user,data_f)
         fig,ax =plt.subplots()
         ax.stem(timeline['time'], timeline['message'])
         plt.xticks(rotation='vertical')
         st.pyplot(fig)
         #daily timeline
         st.subheader("Daily Timeline")
-        date_timeline=main.daily_timeline(selected_user,data_f)
+        date_timeline=main_f.daily_timeline(selected_user,data_f)
         fig, ax = plt.subplots()
         plt.plot(date_timeline['timeline_date'], date_timeline['message'])
         plt.xticks(rotation='vertical')
@@ -105,7 +106,7 @@ if file is not None:
 
         with col1:
             st.subheader("Most busy Day")
-            busy_day = main.weekly_act(selected_user,data_f)
+            busy_day = main_f.weekly_act(selected_user,data_f)
             fig,ax=plt.subplots()
 
             plt.xticks(rotation='vertical')
@@ -113,7 +114,7 @@ if file is not None:
             st.pyplot(fig)
         with col2:
             st.subheader("Most busy Month")
-            busy_month = main.month_activity(selected_user, data_f)
+            busy_month = main_f.month_activity(selected_user, data_f)
             fig, ax = plt.subplots()
             plt.xticks(rotation='vertical')
             ax.bar(busy_month.index, busy_month.values,color='green')
@@ -123,7 +124,7 @@ if file is not None:
 
         #busiest and quitest day
         col1,col2=st.columns(2)
-        bu,qu=main.busy_quiet(selected_user,data_f)
+        bu,qu=main_f.busy_quiet(selected_user,data_f)
         with col1:
             st.subheader("Busiest day's")
             st.dataframe(bu)
@@ -136,7 +137,7 @@ if file is not None:
 
         #heat_map
         st.subheader("Day Long Heat Map")
-        heat_map_u=main.heat_map(selected_user,data_f)
+        heat_map_u=main_f.heat_map(selected_user,data_f)
         fig,ax=plt.subplots()
 
         ax=sns.heatmap(heat_map_u)
